@@ -12,16 +12,26 @@ typedef YoutubeCallback = void Function(JsObject event);
     styleUrls: ['youtube_player_component.css'],
     templateUrl: 'youtube_player_component.html',
     directives: [MaterialIconComponent, NgIf])
-class YouTubePlayerComponent implements AfterViewInit, OnChanges, OnDestroy {
+class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
   static int _index = 0;
   int playerIndex;
   final int maxRetries = 20;
 
   final StreamController<String> _onStateChangeController = StreamController();
   JsObject _player;
+  String _videoId;
 
-  @Input()
-  String videoId;
+  String get videoId => _videoId;
+
+  @Input('videoId')
+  set videoId(String value) {
+    if (value != _videoId) {
+      _videoId = value;
+      if (_player != null) {
+        _player.callMethod('cueVideoById', [_videoId]);
+      }
+    }
+  }
 
   @Input()
   bool autoplay = false;
@@ -60,13 +70,6 @@ class YouTubePlayerComponent implements AfterViewInit, OnChanges, OnDestroy {
   Stream<String> get stateChangeOutput => _onStateChangeController.stream;
 
   @override
-  void ngOnChanges(Map<String, SimpleChange> changes) {
-    if (changes.containsKey('videoId') && _player != null) {
-      _player.callMethod('cueVideoById', [videoId]);
-    }
-  }
-
-  @override
   void ngOnDestroy() {
     _player.callMethod('destroy');
     _onStateChangeController.close();
@@ -86,7 +89,7 @@ class YouTubePlayerComponent implements AfterViewInit, OnChanges, OnDestroy {
       for (var i = 0; i < maxRetries; i++) {
         await Future.delayed(const Duration(milliseconds: 10));
         try {
-          return _createPlayer();                    
+          return _createPlayer();
         } catch (e) {
           print(e);
           print('Youtube API not loaded, retrying ($i)');
