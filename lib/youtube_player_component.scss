@@ -20,31 +20,31 @@
     border: 0;
     margin: 0;
     padding: 0;
-    display: block;
-  }
-  .overlay {          
+    display: block;    
+  }  
+  .overlay {           
     display: block;
     z-index: 2;
 
     .icon {
       display: flex;
       align-items: center;
-      justify-content: center;
-      visibility: hidden;
+      justify-content: center;      
+      opacity: 0;      
+      transition: opacity 0.5s ease;
       height: 100%;
       color: white;
       background-color: black;
-      @include material-icon-size(4rem);
+      @include material-icon-size(5rem);
     }
   }      
 }
-.youtube-player-wrapper.paused {
-  iframe {
-   display: none;
-  }
+
+.youtube-player-wrapper.paused {  
   .overlay {
-    .icon {
-      visibility: visible;
+    .icon {      
+      
+      opacity: 1;
     }
   }
 }

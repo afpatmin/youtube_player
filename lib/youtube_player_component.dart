@@ -37,7 +37,6 @@ class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
   bool autoplay = false;
 
   bool playing = false;
-
   bool started = false;
 
   YouTubePlayerComponent() {
@@ -47,14 +46,16 @@ class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
 
   JsObject get params {
     final vars = <String, String>{};
-    vars['fs'] = '1';
-    vars['rel'] = '0'; // Show related videos at the end of playback
-    vars['modestbranding'] = '0'; // Show minimal youtube branding
-    vars['showinfo'] = '1';
-    vars['origin'] = Uri.base.origin;
-    vars['enablejsapi'] = '1';
     vars['autoplay'] = autoplay ? '1' : '0';
+    vars['color'] = 'red';
     vars['controls'] = '0';
+    vars['disabledkb'] = '0'; // Disable keyboard
+    vars['enablejsapi'] = '1';
+    vars['fs'] = '1'; // Show fullscreen option
+    vars['loop'] = '0'; // Loop video
+    vars['modestbranding'] = '1'; // Show minimal youtube branding
+    vars['rel'] = '1'; // Suggested videos are related
+    vars['origin'] = Uri.base.origin;
     final events = <String, YoutubeCallback>{};
     events['onReady'] = _onReady;
     events['onStateChange'] = _onStateChange;
@@ -100,12 +101,15 @@ class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
 
   void onTouch() {
     if (playing) {
-      _player.callMethod('pauseVideo');
       playing = false;
+      Future.delayed(const Duration(milliseconds: 400)).then((_) {
+        _player.callMethod('pauseVideo');
+      });
     } else {
       _player.callMethod('playVideo');
-      Future.delayed(Duration(milliseconds: 200)).then((_) {
+      Future.delayed(const Duration(milliseconds: 400)).then((_) {
         playing = true;
+        started = true;
       });
     }
   }
@@ -120,11 +124,6 @@ class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
   void _onStateChange(JsObject event) {
     if (_player == null) return;
     switch (event['data']) {
-      case -1:
-        _onStateChangeController.add('Start');
-        started = true;
-        break;
-
       case 0:
         _onStateChangeController.add('End');
         playing = false;
