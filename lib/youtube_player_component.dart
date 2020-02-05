@@ -72,7 +72,7 @@ class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
 
   @override
   void ngOnDestroy() {
-    _player.callMethod('destroy');
+    _player?.callMethod('destroy');
     _onStateChangeController.close();
   }
 
