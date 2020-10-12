@@ -3,7 +3,7 @@ description: A responsive angular wrapper for playing Youtube videos
 version: 0.0.1
 environment:
   sdk: ">=2.2.0 <3.0.0"
-dependencies:  
-  angular: ^6.0.0-alpha  
-  fo_components: ^1.7.6+2
+dependencies:
+  angular: ^6.0.0
+  fo_components: ^2.0.0
   sass_builder: ^2.1.3
