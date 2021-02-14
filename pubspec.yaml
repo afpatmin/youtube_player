@@ -1,9 +1,14 @@
 name: youtube_player
 description: A responsive angular wrapper for playing Youtube videos
 version: 0.0.1
+publish_to: none
 environment:
   sdk: ">=2.2.0 <3.0.0"
 dependencies:
-  angular: ^6.0.0
-  fo_components: ^2.0.0
+  angular: ^6.0.1
+  fo_components:
+    git: https://github.com/afpatmin/fo_components
   sass_builder: ^2.1.3
+
+dependency_overrides:
+  intl: ^0.17.0
