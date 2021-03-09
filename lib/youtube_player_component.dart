@@ -8,10 +8,12 @@ import 'package:angular_components/material_icon/material_icon.dart';
 typedef YoutubeCallback = void Function(JsObject event);
 
 @Component(
-    selector: 'youtube-player',
-    styleUrls: ['youtube_player_component.css'],
-    templateUrl: 'youtube_player_component.html',
-    directives: [MaterialIconComponent, NgIf])
+  selector: 'youtube-player',
+  styleUrls: ['youtube_player_component.css'],
+  templateUrl: 'youtube_player_component.html',
+  directives: [MaterialIconComponent, NgIf],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+)
 class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
   static int _index = 0;
   int playerIndex;
