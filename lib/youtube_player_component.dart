@@ -15,6 +15,7 @@ typedef YoutubeCallback = void Function(JsObject event);
   changeDetection: ChangeDetectionStrategy.OnPush,
 )
 class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
+  final ChangeDetectorRef _changeDetectorRef;
   static int _index = 0;
   int playerIndex;
   final int maxRetries = 20;
@@ -41,7 +42,7 @@ class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
   bool playing = false;
   bool started = false;
 
-  YouTubePlayerComponent() {
+  YouTubePlayerComponent(this._changeDetectorRef) {
     _index++;
     playerIndex = _index;
   }
@@ -110,12 +111,14 @@ class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
       playing = false;
       Future.delayed(const Duration(milliseconds: 400)).then((_) {
         _player.callMethod('pauseVideo');
+        _changeDetectorRef.markForCheck();
       });
     } else {
       _player.callMethod('playVideo');
       Future.delayed(const Duration(milliseconds: 400)).then((_) {
         playing = true;
         started = true;
+        _changeDetectorRef.markForCheck();
       });
     }
   }
