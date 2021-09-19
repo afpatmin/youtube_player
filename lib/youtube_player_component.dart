@@ -3,7 +3,7 @@ import 'dart:html';
 import 'dart:js';
 
 import 'package:angular/angular.dart';
-import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:fo_components/components/fo_icon/fo_icon_component.dart';
 
 typedef YoutubeCallback = void Function(JsObject event);
 
@@ -11,28 +11,26 @@ typedef YoutubeCallback = void Function(JsObject event);
   selector: 'youtube-player',
   styleUrls: ['youtube_player_component.css'],
   templateUrl: 'youtube_player_component.html',
-  directives: [MaterialIconComponent, NgIf],
+  directives: [FoIconComponent, NgIf],
   changeDetection: ChangeDetectionStrategy.OnPush,
 )
 class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
   final ChangeDetectorRef _changeDetectorRef;
   static int _index = 0;
-  int playerIndex;
+  late int playerIndex;
   final int maxRetries = 20;
 
   final StreamController<String> _onStateChangeController = StreamController();
-  JsObject _player;
-  String _videoId;
+  JsObject? _player;
+  String? _videoId;
 
-  String get videoId => _videoId;
+  String? get videoId => _videoId;
 
   @Input('videoId')
-  set videoId(String value) {
+  set videoId(String? value) {
     if (value != _videoId) {
       _videoId = value;
-      if (_player != null) {
-        _player.callMethod('cueVideoById', [_videoId]);
-      }
+      _player?.callMethod('cueVideoById', [_videoId]);
     }
   }
 
@@ -88,8 +86,8 @@ class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
     playing = autoplay;
     started = autoplay;
 
-    if (document.head.querySelector('#fo-youtube') == null) {
-      document.head.children.add(ScriptElement()
+    if (document.head!.querySelector('#fo-youtube') == null) {
+      document.head!.children.add(ScriptElement()
         ..src = 'https://www.youtube.com/iframe_api'
         ..id = 'fo-youtube');
       context['onYouTubeIframeAPIReady'] = _createPlayer;
@@ -110,11 +108,11 @@ class YouTubePlayerComponent implements AfterViewInit, OnDestroy {
     if (playing) {
       playing = false;
       Future.delayed(const Duration(milliseconds: 400)).then((_) {
-        _player.callMethod('pauseVideo');
+        _player?.callMethod('pauseVideo');
         _changeDetectorRef.markForCheck();
       });
     } else {
-      _player.callMethod('playVideo');
+      _player?.callMethod('playVideo');
       Future.delayed(const Duration(milliseconds: 400)).then((_) {
         playing = true;
         started = true;
