@@ -5,9 +5,6 @@ publish_to: none
 environment:
   sdk: ">=2.14.0 <3.0.0"
 dependencies:
-  angular: ^7.0.0
-  fo_components:
-    git:
-      url: https://github.com/afpatmin/fo_components.git
-      ref: null-safety
+  angular: ^7.0.2
+  fo_components: ^3.0.1+1
   sass_builder: ^2.1.4
