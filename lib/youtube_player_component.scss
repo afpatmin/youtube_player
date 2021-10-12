@@ -1,16 +1,12 @@
-
-@import 'package:angular_components/material_icon/mixins';
-
-.youtube-player-wrapper
-{
+.youtube-player-wrapper {
   position: relative;
   padding-bottom: 56.25%; // 16:9
   padding-top: 0;
   height: 0;
-  overflow: hidden; 
+  overflow: hidden;
 
-  iframe, .overlay
-  {
+  iframe,
+  .overlay {
     cursor: pointer;
     position: absolute;
     top: 0;
@@ -20,30 +16,29 @@
     border: 0;
     margin: 0;
     padding: 0;
-    display: block;    
-  }  
-  .overlay {           
+    display: block;
+  }
+  .overlay {
     display: block;
     z-index: 2;
 
     .icon {
       display: flex;
       align-items: center;
-      justify-content: center;      
-      opacity: 0;      
+      justify-content: center;
+      opacity: 0;
       transition: opacity 0.5s ease;
       height: 100%;
       color: white;
       background-color: black;
-      @include material-icon-size(5rem);
+      font-size: 5rem;
     }
-  }      
+  }
 }
 
-.youtube-player-wrapper.paused {  
+.youtube-player-wrapper.paused {
   .overlay {
-    .icon {      
-      
+    .icon {
       opacity: 1;
     }
   }
